@@ -6,7 +6,7 @@ require('dotenv').config();
 const app = express();
 
 var corsOptions = {
-  origin: "http://localhost:8082"
+  origin: "http://localhost:3000"
 };
 
 app.use(cors(corsOptions));
@@ -18,36 +18,39 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const db = require("./app/models");
-// const Role = db.role;
 
 db.sequelize.sync();
 
+/**
+ * Launch the "force: true" option and the initial function for the first time launch or to resync the db
+ */
 // db.sequelize.sync({force: true}).then(() => {
 //   console.log('Drop and Resync Db');
 //   initial();
 // });
 
+// const Role = db.role;
 
 // function initial() {
 //   Role.create({
 //     id: 1,
-//     name: "user"
+//     name: "ROLE_USER"
 //   });
  
 //   Role.create({
 //     id: 2,
-//     name: "moderator"
+//     name: "ROLE_MODERATOR"
 //   });
  
 //   Role.create({
 //     id: 3,
-//     name: "admin"
+//     name: "ROLE_ADMIN"
 //   });
 // }
 
 // simple route
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to bezkoder application." });
+  res.json({ message: "Welcome to Aledia application." });
 });
 
 require('./app/routes/auth.routes')(app);

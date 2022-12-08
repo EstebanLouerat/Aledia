@@ -30,3 +30,39 @@ label {
   -webkit-border-radius: 50%;
   border-radius: 50%;
 }
+
+.container-profile {
+  position: relative;
+  text-align: center;
+  color: white;
+  transition: 0.2s;
+}
+
+.profile-img-header {
+  width: 35px;
+  height: 35px;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+  opacity: 100%;
+}
+
+.container-profile:hover {
+  opacity: 20%;
+}
+
+.nav-link {
+  cursor: pointer;
+}
+
+.center {
+  text-align: center;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+.aledia-logo{
+  width: 100px;
+}
