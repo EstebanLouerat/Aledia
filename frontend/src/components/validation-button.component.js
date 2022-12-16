@@ -32,12 +32,13 @@ export default function ValidationButton({grid}) {
 
     axios.post("http://localhost:3001/api/data", tab).then((response) => {
       console.log(response.status);
+      swal("Success !", "Data Send", "success");
     })
     .catch(error => {
       console.log(error);
       swal("Aïe!", `${error.message}.\nCode : ${error.code}`, "error");
     });
-    
+
     setLoading(false);
   };
 

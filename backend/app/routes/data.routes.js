@@ -14,31 +14,26 @@ module.exports = function(app) {
 
   app.post(
     "/api/data",
-    [authJwt.verifyToken],
     controller.sendData
   );
 
   app.get(
     "/api/data/:id",
-    [authJwt.verifyToken],
     controller.findData
   );
 
   app.put(
     "/api/data/:id",
-    [authJwt.verifyToken, authJwt.isAdmin],
     controller.updateData
   );
 
   app.delete(
     "/api/data",
-    [authJwt.verifyToken, authJwt.isAdmin],
     controller.removeData
   );
 
   app.delete(
     "/api/data/:id",
-    [authJwt.verifyToken, authJwt.isAdmin],
     controller.removeDataById
   );
 };

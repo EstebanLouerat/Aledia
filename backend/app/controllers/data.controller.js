@@ -9,11 +9,12 @@ const pool = new Pool({
 })
 
 exports.getData = (req, res) => {
-    pool.query(`SELECT * FROM "split_entry" AS "Split Entry";`, (err, res) => {
-        if (err) throw err;
-        console.log(res)
-        pool.end()
-    })
+    // pool.query(`SELECT * FROM "split_history" AS "Split Entry";`, (err, res) => {
+    //     if (err) throw err;
+    //     console.log(res)
+    //     pool.end()
+    // })
+    res.send(`Data get.`);
 }
 
 const valuesEntryConcat = (refid, sn, lot, lt, sg, sgd, job, user) => {
@@ -70,8 +71,12 @@ exports.sendData = (req, res) => {
 
     // valuesEntryConcat(split_refid, split_name, split_lot_id, laser_tag, split_group, split_group_desc)
     res.send("Data send to api")
-    pool.query(`${nextVal}INSERT INTO public.${process.env.DB_DATA_NAME} (split_refid, split_name, split_lot_id, split_fk_wafer, split_group, split_group_desc, split_insert_job, split_user) VALUES ${valuesEntryConcat(split_refid, split_name, split_lot_id, laser_tag, split_group, split_group_desc, split_insert_job, split_user)};`, (err, res) => {
-        if (err) throw err;
+    pool.query(`${nextVal}INSERT INTO public.split_history (split_refid, split_name, split_lot_id, split_fk_wafer, split_group, split_group_desc, split_insert_job, split_user) VALUES ${valuesEntryConcat(split_refid, split_name, split_lot_id, laser_tag, split_group, split_group_desc, split_insert_job, split_user)};`, (err, res) => {
+        if (err){
+            console.log(err)
+            throw err;
+        } 
+            
         console.log(res)
         pool.end();
     })
