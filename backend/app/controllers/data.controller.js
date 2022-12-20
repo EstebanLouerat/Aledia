@@ -1,12 +1,12 @@
 const { Pool, Client } = require('pg');
 
-const pool = new Pool({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'test_al',
-    password: 'coi1234',
-    port: 5432
-})
+const connection = {
+    user: process.env.DB_USER,
+    host: process.env.DB_HOST,
+    database: process.env.DB_DATA_NAME,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PORT
+}
 
 exports.getData = (req, res) => {
     // pool.query(`SELECT * FROM "split_history" AS "Split Entry";`, (err, res) => {
@@ -15,6 +15,12 @@ exports.getData = (req, res) => {
     //     pool.end()
     // })
     res.send(`Data get.`);
+}
+
+const ConcatError = (error) => {
+    var string = error.message + "|" + error.code + "|" + error.detail;
+
+    return string;
 }
 
 const valuesEntryConcat = (refid, sn, lot, lt, sg, sgd, job, user) => {
@@ -32,8 +38,9 @@ const valuesEntryConcat = (refid, sn, lot, lt, sg, sgd, job, user) => {
 
 exports.sendData = (req, res) => {
     const data = req.body;
-    const nextVal = "SELECT nextval('split_history_refid_seq');"
+    const pool = new Pool(connection);
 
+    const nextVal = "SELECT nextval('split_history_refid_seq');"
     const split_refid = "SELECT currval('split_history_refid_seq')";
     const split_name = [];
     const split_lot_id = [];
@@ -70,14 +77,12 @@ exports.sendData = (req, res) => {
     });
 
     // valuesEntryConcat(split_refid, split_name, split_lot_id, laser_tag, split_group, split_group_desc)
-    res.send("Data send to api")
-    pool.query(`${nextVal}INSERT INTO public.split_history (split_refid, split_name, split_lot_id, split_fk_wafer, split_group, split_group_desc, split_insert_job, split_user) VALUES ${valuesEntryConcat(split_refid, split_name, split_lot_id, laser_tag, split_group, split_group_desc, split_insert_job, split_user)};`, (err, res) => {
+    pool.query(`${nextVal}INSERT INTO public.${process.env.DB_DATA_TABLE_NAME} (split_refid, split_name, split_lot_id, split_fk_wafer, split_group, split_group_desc, split_insert_job, split_user) VALUES ${valuesEntryConcat(split_refid, split_name, split_lot_id, laser_tag, split_group, split_group_desc, split_insert_job, split_user)};`, (err, response) => {
         if (err){
-            console.log(err)
-            throw err;
-        } 
-            
-        console.log(res)
+            res.status(406).send(ConcatError(err))
+        } else {
+            res.send("Data successfully send")
+        }
         pool.end();
     })
 }

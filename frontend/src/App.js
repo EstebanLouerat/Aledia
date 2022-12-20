@@ -47,7 +47,7 @@ class App extends Component {
       dangerMode: true,
     });
     if (willDelete) {
-      redirect("/login");
+      console.log("houlala")
       AuthService.logout();
       this.setState({
         showModeratorBoard: false,
@@ -55,6 +55,7 @@ class App extends Component {
         currentUser: undefined,
       });
       await swal("LogOut!", "You are now log out!", "success");
+      redirect("/");
       window.location.reload(false);
     }
     
@@ -76,7 +77,7 @@ class App extends Component {
             <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li className="nav-item">
-                  <Link to={"/home"} class="nav-link active" aria-current="page">
+                  <Link to={"/"} class="nav-link active" aria-current="page">
                     Home
                   </Link>
                 </li>
@@ -123,7 +124,7 @@ class App extends Component {
                 </li>
                 <li className="nav-item">
                   <div className="nav-link" onClick={this.logOut}>
-                    LogOut
+                      LogOut
                   </div>
                 </li>
               </div>
@@ -135,11 +136,11 @@ class App extends Component {
                   </Link>
                 </li>
 
-                <li className="nav-item">
+                {/* <li className="nav-item">
                   <Link to={"/register"} className="nav-link">
                     Sign Up
                   </Link>
-                </li>
+                </li> */}
               </div>
             )}
           </div>
@@ -148,7 +149,6 @@ class App extends Component {
         <div className="container mt-3">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/home" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/profile" element={<Profile />} />

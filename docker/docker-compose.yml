@@ -1,0 +1,67 @@
+# docker-compose up -d
+# docker-compose stop
+# docker compose up --force-recreate -d [service]
+# docker-compose down (supprimer les images et les reseaux)
+# docker-compose down -v (supprimer les volumes)
+# docker inspect <container>
+# docker-compose ps
+# docker exec -it <container> /bin/bash
+
+
+
+
+version: "3.7"
+
+services:
+
+
+  postgres-aledia:
+    image: postgres:alpine3.15
+    container_name: postgres-aledia01
+    environment:
+      POSTGRES_PASSWORD: coi1234
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres-aledia-data:/var/lib/postgresql/data
+    networks:
+      - aledia_test
+
+
+
+# how to run static website with minio and nginx
+# https://gist.github.com/harshavardhana/f05b60fe6f96803743f38bea4b565bbf
+  # nginx:
+  #   image: nginx:latest
+  #   container_name: nginx01
+  #   volumes:
+  #     - ./volumes/nginx01_confd:/etc/nginx/conf.d:ro
+  #   ports:
+  #     - 80:80
+  #   networks:
+  #     - data_manufacture
+
+
+  # coi_services_front:
+  #   image: coi_services_front
+  #   container_name: coi_services_front01
+  #   ports:
+  #       - "8086:80"
+  #   networks:
+  #     - data_manufacture
+
+
+  # coi_services_back:
+  #   image: coi_services_back
+  #   container_name: coi_services_back01
+  #   networks:
+  #     - data_manufacture
+
+volumes:
+
+  postgres-aledia-data:
+    driver: local
+
+
+networks:
+  aledia_test:
